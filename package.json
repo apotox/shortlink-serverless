@@ -1,0 +1,22 @@
+{
+  "name": "shortless-url",
+  "version": "1.0.0",
+  "description": "a short-link app using Aws Lambda, Serverless, Dynamodb and Auth0",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "script_insert": "source .env.dev && node scripts/insert-links.js"
+  },
+  "keywords": [],
+  "author": "safi eddine bouhentala",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-offline": "^7.0.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.937.0",
+    "mime-types": "^2.1.31",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-pseudo-parameters": "^2.5.0"
+  }
+}

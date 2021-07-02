@@ -1,0 +1,109 @@
+html, body {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .container {
+    margin: 0 auto;
+
+    max-width: 720px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .part{
+    flex-basis: auto;
+    margin: 0.4rem;
+  }
+  .part-1{
+      min-width: 330px;
+    flex-shrink: 3;
+        flex-grow: 2;
+  }
+  .part-2{
+    flex-grow: 1;
+  }
+
+  .input-container{
+      padding: 1rem;
+     
+  }
+  .input-container input {
+      padding: 0.4rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+  }
+  
+  body {
+    font-family: "proxima-nova", sans-serif;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 100;
+  }
+  
+  h1,
+  h2,
+  h3 {
+    font-weight: 100;
+  }
+  
+  #message {
+    min-height: 40px;
+    font-size: 22px;
+  }
+  
+  #logo img {
+    width: 100px;
+    margin-bottom: 10px;
+    margin-top: 50px;
+  }
+  
+  .btn {
+    font-size: 16px;
+    letter-spacing: 1px;
+    border: 0;
+    background-color: #16214D;
+    color: white;
+    min-width: 80px;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    min-width: 200px;
+  }
+  
+  .btn:hover {
+    background-color: #44C7F4;
+  }
+  
+  .btn:focus {
+    outline: none !important;
+  }
+  
+  .btn:disabled {
+    background-color: #333;
+    color: #666;
+  }
+  
+  .api-actions, .user-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  .api-actions button:last-of-type, .user-actions button:last-of-type {
+    margin-left: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .api-actions, .user-actions {
+      flex-direction: column;
+    }
+    .api-actions button:last-of-type, .user-actions button:last-of-type {
+      margin-left: 0px;
+      margin-top: 20px;
+    }
+  }

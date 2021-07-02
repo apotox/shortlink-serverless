@@ -1,0 +1,92 @@
+service: shortless-url
+
+frameworkVersion: '2'
+useDotenv: true
+custom:
+  configurations: ${file(config.json)}
+  table_links: ${file(config.json):table_links}-${opt:stage,"dev"}
+  NODE_ENV:
+    dev: 'development'
+    prod: 'production'
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+
+
+provider:
+  name: aws
+  memorySize: 128
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  iamRoleStatements:
+    - Effect: Allow
+      Action: 
+        - dynamodb:scan
+        - dynamodb:PutItem
+        - dynamodb:Query
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.table_links}
+  environment:
+    AWS_REGION: 'localhost'
+    PROJECT_ID: ${self:custom.configurations.projectId}
+    TABLE_LINKS: ${self:custom.table_links}
+    AUTH0_CLIENT_ID: ${file(./auth/secrets.json):AUTH0_CLIENT_ID}
+    AUTH0_CLIENT_PUBLIC_KEY: ${file(./auth/public_key)}
+
+
+functions:
+  auth:
+    handler: api/authorizer.auth
+  get-index:
+    handler: api/home.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: GET
+  get-version:
+    handler: api/get-version.handler
+    events:
+      - http:
+          path: /version
+          method: GET
+          authorizer: auth
+  get-link:
+    handler: api/get-link.handler
+    events:
+      - http:
+          path: /l/{linkId}
+          method: GET
+  post-link:
+    handler: api/post-link.handler
+    events:
+      - http:
+          path: /
+          method: POST
+          cars: true
+          authorizer: auth
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.table_links}
+        AttributeDefinitions:
+          - AttributeName: linkId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: linkId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+
+plugins:
+  - serverless-offline
+  - serverless-pseudo-parameters
+  - serverless-dynamodb-local
